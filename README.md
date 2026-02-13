@@ -115,6 +115,60 @@ Una vez iniciada la aplicación, accede a:
 - **Swagger UI**: http://localhost:8000/docs
 - **ReDoc**: http://localhost:8000/redoc
 
+### Endpoints disponibles:
+
+#### Notificaciones (v1)
+
+- **POST** `/api/v1/notifications/` - Crear nueva notificación
+- **GET** `/api/v1/notifications/` - Listar notificaciones (con paginación y filtros)
+- **GET** `/api/v1/notifications/{id}` - Obtener notificación por ID
+- **PATCH** `/api/v1/notifications/{id}` - Actualizar notificación
+- **DELETE** `/api/v1/notifications/{id}` - Eliminar notificación
+
+#### Canales soportados:
+- `email` - Email
+- `sms` - SMS
+- `push` - Push notification
+- `webhook` - Webhook
+- `slack` - Slack
+- `telegram` - Telegram
+
+#### Estados de notificación:
+- `pending` - Pendiente de envío
+- `sent` - Enviada exitosamente
+- `failed` - Falló el envío
+- `cancelled` - Cancelada
+
+#### Prioridades:
+- `low` - Baja
+- `normal` - Normal (default)
+- `high` - Alta
+- `urgent` - Urgente
+
+### Ejemplo de uso:
+
+```bash
+# Crear notificación
+curl -X POST http://localhost:8000/api/v1/notifications/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channel": "email",
+    "recipient": "user@example.com",
+    "subject": "Welcome!",
+    "message": "Welcome to Universal Notifier API",
+    "priority": "high",
+    "metadata": {"user_id": "123"}
+  }'
+
+# Listar notificaciones (con filtros)
+curl http://localhost:8000/api/v1/notifications/?status=pending&page=1&page_size=10
+
+# Actualizar estado
+curl -X PATCH http://localhost:8000/api/v1/notifications/{id} \
+  -H "Content-Type: application/json" \
+  -d '{"status": "sent"}'
+```
+
 ## 🛠️ Tecnologías
 
 - **FastAPI**: Framework web moderno y rápido

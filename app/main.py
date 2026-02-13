@@ -6,6 +6,7 @@ from typing import AsyncGenerator
 from fastapi import FastAPI
 from app.core.config import settings
 from app.core.database import connect_to_mongo, close_mongo_connection
+from app.api.v1.router import api_router
 
 
 @asynccontextmanager
@@ -24,6 +25,9 @@ app = FastAPI(
     description="Universal Notifier API - Sistema de notificaciones multi-canal",
     lifespan=lifespan,
 )
+
+# Include API v1 router
+app.include_router(api_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
